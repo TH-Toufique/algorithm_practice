@@ -1,6 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <ctime>
+#include<iostream>
+#include<fstream>
+#include<ctime>
 
 using namespace std;
 
@@ -13,47 +13,56 @@ void insertion_sort(int arr[], int n)
 
         while (j >= 0 && arr[j] > key)
         {
-            arr[j + 1];
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j + 1];
-    }
+        arr[j + 1] = key;
+    } 
 }
 
 int main()
 {
-    const int MAX_SIZE = 100000;
+    const int MAX_SIZE = 10000;
     int number[MAX_SIZE];
     int count = 0;
 
-    ifstream input_file("numbers.txt");
-    if (!input_file)
+    ifstream inputFile("numbers.txt");
+    if (!inputFile)
     {
         cerr << "The file is not found";
-        return -1;
+        return 1;
     }
 
-    while (input_file >> number[count] && count < MAX_SIZE)
+    while (inputFile >> number[count] && count < MAX_SIZE)
     {
         count++;
     }
-    input_file.close();
+    inputFile.close();
 
     clock_t start = clock();
+
 
     insertion_sort(number, count);
 
     clock_t end = clock();
 
-    double time_taken = double(end - start) / CLOCKS_PER_SEC;
+    double time_taken = double (end - start) / CLOCKS_PER_SEC;
 
-    cout << "Sorted Array: " << endl;
+    ofstream outputFile("sorted.txt");
+    if (!outputFile)
+    {
+        cerr << "Failed to open sorted.txt for writing.";
+        return 1;
+    }
+
     for (int i = 0; i < count; i++)
     {
-        cout << number[i] << " ";
+        outputFile << number[i] << " ";
     }
-    cout << endl;
+    outputFile.close();
 
-    cout << "Time taken to sorts: " << time_taken << " seconds" << endl;
+    cout << "Sorted numbers have been written to sorted.txt." << endl;
+    cout << "Time taken for sorting: " << time_taken << " seconds" << endl;
+
     return 0;
 }
